@@ -10,15 +10,11 @@ export default function Home() {
       <ul className="flex justify-center gap-20 mt-20 text-lg">
   {WAYDOCS.map((item) => (
     <div key={item.title}>
-      <h2 className="text-xl font-bold">{item.title}</h2>
-      
           <div>
             <Link href={item.url}>
               <CatCard title={item.title} />
             </Link>
           </div>
-         
-      
     </div>
   ))}
 </ul>
