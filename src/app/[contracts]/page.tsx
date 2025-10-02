@@ -1,27 +1,31 @@
 'use client'
-import { WAYDOCS } from "../data/wayData"
+import { DOCS } from "../config/configDocs"
 
 import { useParams } from "next/navigation"
 
 
 export default function() {
-    const {contracts} = useParams()
+    const {contracts} = useParams<{ contracts: string }>()
+    console.log(contracts)
+
+    
 
 
-     const contract = WAYDOCS.find((item) => item.url === contracts)
+    const contract = DOCS.find((item) => item.url === contracts)
 
-  if (!contract) {
-    return (
-      <div>
-        <h1>❌ Договор не найден</h1>
-      </div>
-    )
-  } else {
-    return (
-      <div>
-        <h1>Договор: {contract.title}</h1>
-      </div>
-    )
+    
+    console.log(contract)
+   if (!contract) {
+    return <h1>❌ Договор не найден</h1>
   }
-  
+
+  const Form = contract.Form
+
+  return (
+    <div>
+      <h1>Договор: {contract.name}</h1>
+      <Form /> {/* вот тут своя форма */}
+    </div>
+  )
 }
+  
