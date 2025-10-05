@@ -2,7 +2,9 @@
 import { useRef,  useEffect } from "react";
 import { useState } from "react"
 import gsap from "gsap"
-
+import PizZip from "pizzip";
+import Docxtemplater from "docxtemplater";
+import { saveAs } from "file-saver";
 
 
 export function DocForm1() {
@@ -10,14 +12,14 @@ export function DocForm1() {
       useEffect(() => {
     if (button1.current) {
       // создаём timeline
-      gsap.to(button1.current, {
-        duration: 1,      // время анимации
+      /* gsap.to(button1.current, {
+        duration: 10,      // время анимации
         x: 1500,           // смещение вправо
         rotation: 0,     // небольшое вращение
         yoyo: true,       // обратно
         repeat: -1,       // бесконечно
         // плавность
-      })
+      }) */
     }
   }, [])
     const [form, SetForm] = useState({
@@ -27,7 +29,36 @@ export function DocForm1() {
         data: '',
     })
 
-    console.log(form)
+const generateDoc = async () => {
+    try {
+      // Загрузка шаблона .docx (файл должен лежать в public)
+      const response = await fetch("/template1.docx");
+      const content = await response.arrayBuffer();
+
+      const zip = new PizZip(content);
+      const doc = new Docxtemplater(zip, { paragraphLoop: true, linebreaks: true });
+
+      // Заполнение плейсхолдеров
+      doc.render({
+        ФИО: form.inp1,
+        Марка: form.inp2,
+        Номер: form.inp3,
+        Дата: new Date().toLocaleDateString(),
+      });
+
+      // Генерация итогового документа и сохранение
+      const blob = doc.getZip().generate({ type: "blob" });
+      saveAs(blob, "Договор_заполненный.docx");
+    } catch (error) {
+      console.error("Ошибка при заполнении шаблона:", error);
+      alert("Не удалось сгенерировать документ.");
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    generateDoc();
+  };
 
     function CreateForm(e: React.ChangeEvent<HTMLInputElement>) {
         const { name, value } = e.target
@@ -41,7 +72,7 @@ export function DocForm1() {
 
     }
     return(
-        <form >
+        <form onSubmit={handleSubmit}>
             <div className="flex flex-col justify-center gap-5">
                 <label   className="text-center">Фамилия|Имя|Отчество
                 <input className="border" name="inp1" value={form.inp1} onChange={CreateForm} />
