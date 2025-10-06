@@ -1,31 +1,18 @@
+
 'use client'
-import { DOCS } from "../config/configDocs"
+import { useParams } from "next/navigation";
+import { DOCS } from "@/app/config/configDocs";
+import { UniversalDocForm } from "@/components/UniversalDocForm";
 
-import { useParams } from "next/navigation"
+export default function DocPage() {
+  const { contracts } = useParams();
+  const contract = DOCS.find((c) => c.url === contracts);
 
-
-export default function() {
-    const {contracts} = useParams<{ contracts: string }>()
-    console.log(contracts)
-
-    
-
-
-    const contract = DOCS.find((item) => item.url === contracts)
-
-    
-    console.log(contract)
-   if (!contract) {
-    return <h1>❌ Договор не найден</h1>
-  }
-
-  const Form = contract.Form
+  if (!contract) return <h1>❌ Договор не найден</h1>;
 
   return (
     <div>
-      <h1>Договор: {contract.name}</h1>
-      <Form /> {/* вот тут своя форма */}
-    </div>
-  )
-}
-  
+      <h1 className="text-center">{contract.name}</h1>
+      <UniversalDocForm template={contract.template} formFields={contract.formFields} />
+    </div>);
+  }
