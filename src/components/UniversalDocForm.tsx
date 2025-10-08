@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { InputForm } from "@/components/ui/InputForm";
 import { generateDoc } from "@/lib/generateDoc";
+import { Calendar, CalendarDayButton } from "@/components/ui/calendarAndButton/calendar";
+
 
 interface IUniversalFormProps {
   template: string;
@@ -16,6 +18,8 @@ export function UniversalDocForm({ template, formFields }: IUniversalFormProps) 
   }, {} as Record<string, string>);
 
   const [form, SetForm] = useState(initialState);
+  const [date, setDate] = useState<Date | undefined>(new Date())
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,7 +34,7 @@ export function UniversalDocForm({ template, formFields }: IUniversalFormProps) 
       return acc;
     }, {} as Record<string, string>);
 
-    docData["Дата"] = new Date().toLocaleDateString();
+    docData["Дата"] = date ? date.toLocaleDateString('ru-RU') : new Date().toLocaleDateString('ru-RU');
 
     generateDoc(template, docData, "Договор_заполненный.docx");
   };
@@ -48,6 +52,22 @@ export function UniversalDocForm({ template, formFields }: IUniversalFormProps) 
           onChange={handleChange}
         />
       ))}
+
+
+      <button
+        type="button"
+        className="mt-2 mb-2 p-2 border rounded"
+        onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+      >
+        {isCalendarOpen ? "Закрыть календарь" : "Выбрать дату"}
+      </button>
+
+      {/* Отрисовка календаря по условию */}
+      {isCalendarOpen && <Calendar
+      mode="single"
+      selected={date}
+      onSelect={setDate}
+      className="rounded-lg border"/>}
 
       <button
         type="submit"
