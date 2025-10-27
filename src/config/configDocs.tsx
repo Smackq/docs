@@ -1,5 +1,3 @@
-
-
 export interface IFormField {
   label: string;
   name: string;
@@ -23,6 +21,8 @@ export const DOCS: IDocs[] = [
       { label: "ФИО", name: "inp1", type: "text", placeholderDoc: "ФИО" },
       { label: "Марка машины", name: "inp2", type: "text", placeholderDoc: "Марка" },
       { label: "Номер машины", name: "inp3", type: "text", placeholderDoc: "Номер" },
+      { label: "Номер машины3", name: "inp323", type: "date", placeholderDoc: "Номер1" },
+      { label: "День говна", name: "data23213", type: "date", placeholderDoc: "D" }
     ],
   },
   {
