@@ -12,7 +12,7 @@ export interface IDOCS {
 export const WAYDOCS:IWAYDOCS[] = [
     {
         title: "Автомобили",
-        url: "avto",
+        url: "/contract/avto",
         doc: 
             [
                 {

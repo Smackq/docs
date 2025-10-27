@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { InputForm } from "@/components/ui/InputForm";
 import { generateDoc } from "@/lib/generateDoc";
-import { Calendar, CalendarDayButton } from "@/components/ui/calendarAndButton/calendar";
+
 
 
 interface IUniversalFormProps {
@@ -19,7 +19,6 @@ export function UniversalDocForm({ template, formFields }: IUniversalFormProps) 
 
   const [form, SetForm] = useState(initialState);
   const [date, setDate] = useState<Date | undefined>(new Date())
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,7 +29,7 @@ export function UniversalDocForm({ template, formFields }: IUniversalFormProps) 
     e.preventDefault();
 
     const docData = formFields.reduce((acc, field) => {
-      acc[field.placeholderDoc] = form[field.name];
+      acc[field.placeholderDoc] = form[field.name];         
       return acc;
     }, {} as Record<string, string>);
 
@@ -54,20 +53,6 @@ export function UniversalDocForm({ template, formFields }: IUniversalFormProps) 
       ))}
 
 
-      <button
-        type="button"
-        className="mt-2 mb-2 p-2 border rounded"
-        onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-      >
-        {isCalendarOpen ? "Закрыть календарь" : "Выбрать дату"}
-      </button>
-
-      {/* Отрисовка календаря по условию */}
-      {isCalendarOpen && <Calendar
-      mode="single"
-      selected={date}
-      onSelect={setDate}
-      className="rounded-lg border"/>}
 
       <button
         type="submit"

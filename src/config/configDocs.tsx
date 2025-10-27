@@ -16,8 +16,8 @@ export interface IDocs {
 
 export const DOCS: IDocs[] = [
   {
-    name: "Аренда транспорта",
-    url: "rentCar",
+    name: "/contract/kuplya-prodazha-avtomobilya",
+    url: "kuplya-prodazha-avtomobilya",
     template: "/template1.docx",
     formFields: [
       { label: "ФИО", name: "inp1", type: "text", placeholderDoc: "ФИО" },
