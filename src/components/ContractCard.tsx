@@ -17,7 +17,7 @@ export default function ContractCard({title, description, imageUrl, category, sl
                 <h1 className="text-xl font-semibold mb-[10px]">{title}</h1>
             </Link>
             <p className="break-all line-clamp-2 leading-6 mb-4 overflow-hidden">{description}</p>
-            <Image width={276} height={164} src={imageUrl} alt={title} className="rounded-2xl w-[246px] h-[154px]"/>
+            <Image width={276} height={164} src={imageUrl} alt={title} className="rounded-2xl w-full"/>
             <div className="flex items-center justify-between mt-4">
                 <span className="">{category}</span>
                 <Link  href={`/contract/${slug}`}>

@@ -8,7 +8,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
   return (
     <html lang="en">
       <body>
-        <main className="flex-col justify-center">
+        <main className="flex-col justify-center ">
         {children}
         </main>
       </body>

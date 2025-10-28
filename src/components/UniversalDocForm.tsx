@@ -3,7 +3,8 @@ import { useState } from "react"
 import { InputForm } from "@/components/ui/InputForm"
 import { generateDoc } from "@/lib/generateDoc"
 import { Calendar } from "./ui/calendarAndButton/calendar"
-
+import { Button } from "./ui/button";
+import { FaSearch } from "react-icons/fa"
 interface IUniversalFormProps {
   template: string
   formFields: { label: string; name: string; type: string; placeholderDoc: string }[]
@@ -57,9 +58,15 @@ export function UniversalDocForm({ template, formFields }: IUniversalFormProps) 
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
+    <form onSubmit={handleSubmit}>
+      <section className="w-full h-[530px] bg-red-400 flex flex-col justify-center items-center">
+            <h1 className="text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white p-5 bg-black font-bold">Create your own contract</h1>
+            <p className="text-center text-white text-[20px] mt-6">This application generates up-to-date contracts in many areas of activity.</p>
+              
+          </section>
+          <div className="mt-15  max-w-5xl flex flex-col mx-auto gap-5 w-full mb-20 px-5">
       {formFields.map((field) => (
-        <div key={field.name} className="w-full max-w-sm">
+        <div key={field.name} >
           {field.type === "date" ? (
             <>
               <label className="block mb-1 text-gray-700">{field.label}</label>
@@ -96,12 +103,8 @@ export function UniversalDocForm({ template, formFields }: IUniversalFormProps) 
         </div>
       ))}
 
-      <button
-        type="submit"
-        className="mt-6 w-full max-w-sm p-3 rounded-xl bg-gradient-to-r from-purple-500 to-orange-500 text-white"
-      >
-        Распечатать договор
-      </button>
+      <Button>Скачать договор</Button>
+      </div>
     </form>
   )
 }
