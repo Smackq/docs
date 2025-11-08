@@ -1,5 +1,5 @@
 import { FaSearch } from "react-icons/fa"
-import Link from "next/link";
+
 
 import { client } from "@/sanity/lib/client";
 import { CONTRACT_QUERY } from "@/sanity/lib/queries";
