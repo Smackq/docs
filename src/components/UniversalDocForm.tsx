@@ -1,67 +1,72 @@
+// UniversalDocForm.tsx
 'use client'
-
-import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { convert as convertNumberToWordsRu } from 'number-to-words-ru'
+import React from "react"
+import { useForm, Controller } from "react-hook-form"
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { ru } from "date-fns/locale"; 
 import { InputForm } from "@/components/ui/InputForm"
-import { Calendar } from "./ui/calendarAndButton/calendar"
 import { Button } from "./ui/button"
-import { generateDoc } from "@/lib/generateDoc"
 import { IFormField } from "@/config/configDocs"
-
+import { generateDoc } from "@/lib/generateDoc"
 
 interface IUniversalFormProps {
   template: string
   formFields: IFormField[]
 }
 
+type FormValues = Record<string, any>
+
 export function UniversalDocForm({ template, formFields }: IUniversalFormProps) {
-  const { register, handleSubmit, formState: { errors }, setValue, getValues } = useForm()
-  const [dates, setDates] = useState<Record<string, Date | undefined>>({})
-  const [openCalendars, setOpenCalendars] = useState<Record<string, boolean>>({})
+  // Инициализация формы
+  const { register, handleSubmit, formState: { errors }, control } = useForm<FormValues>()
 
-  // 🧩 Выбор даты
-  const handleDateSelect = (name: string, value?: Date) => {
-    setDates(prev => ({ ...prev, [name]: value }))
-    setValue(name, value ? value.toLocaleDateString("ru-RU") : "")
-    setOpenCalendars(prev => ({ ...prev, [name]: false }))
-  }
+  // -----------------------------
+  // Сабмит: подготовка данных для генерации документа
+  // -----------------------------
+  const onSubmit = (data: Record<string, string | Date>) => {
+    const docData: Record<string, any> = {}
 
-  // 🧩 Сабмит
-  const onSubmit = (data: Record<string, string>) => {
-    const docData: Record<string, string> = {}
+for (const field of formFields) {
+  docData[field.placeholderDoc || field.name] = data[field.name] ?? ""
+}
 
-    // Основные поля
+    // Форматируем даты (Д, М, Г)
     for (const field of formFields) {
-      docData[field.placeholderDoc || field.name] = data[field.name]
-    }
-
-    // Форматируем даты
-    for (const [name, date] of Object.entries(dates)) {
-      if (date) {
-        const field = formFields.find(f => f.name === name)
-        const classDate = field?.class_date
-        const months = [
-          "января", "февраля", "марта", "апреля", "мая", "июня",
-          "июля", "августа", "сентября", "октября", "ноября", "декабря"
-        ]
-        const d = date.getDate().toString().padStart(2, "0")
-        const m = months[date.getMonth()]
-        const y = classDate === "short"
-          ? (date.getFullYear() % 100).toString()
-          : date.getFullYear().toString()
-
-        docData[`${name}_Д`] = d
-        docData[`${name}_М`] = m
-        docData[`${name}_Г`] = y
+      if (field.type === "date") {
+        const date = data[field.name]
+        if (date instanceof Date) {
+          const months = [
+            "января","февраля","марта","апреля","мая","июня",
+            "июля","августа","сентября","октября","ноября","декабря"
+          ];
+          const d = date.getDate().toString().padStart(2, "0");
+          const m = months[date.getMonth()];
+          const y = field.class_date === "short"
+            ? (date.getFullYear() % 100).toString()
+            : date.getFullYear().toString();
+          docData[`${field.name}_Д`] = d
+          docData[`${field.name}_М`] = m
+          docData[`${field.name}_Г`] = y
+        }
       }
+      if (field.class_input === "price") {
+      const rawPrice = data[field.name] // уже здесь
+      // при необходимости преобразовать в пропись:
+      const priceWords = convertNumberToWordsRu(String(rawPrice ?? "0"))
+      // docData[`${field.name}_WORDS`] = priceWords
+      console.log(priceWords)
+    }
     }
 
-    generateDoc(template, docData, "Договор_заполненный.docx")
+    generateDoc(template, docData, "customizedoc.docx")
   }
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* Шапка */}
+
       <section className="w-full h-[530px] bg-red-400 flex flex-col justify-center items-center">
         <h1 className="text-center text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white p-5 bg-black font-bold">
           Create your own contract
@@ -71,38 +76,38 @@ export function UniversalDocForm({ template, formFields }: IUniversalFormProps) 
         </p>
       </section>
 
-      {/* Поля формы */}
+  
       <div className="mt-15 max-w-5xl flex flex-col mx-auto gap-5 w-full mb-20 px-5">
         {formFields.map((field) => (
-          <div key={field.name}>
+          <div key={field.name} className="mb-4">
             {field.type === "date" ? (
               <>
+           
                 <label className="block mb-1 text-gray-700">{field.label}</label>
-                <button
-                  type="button"
-                  onClick={() => setOpenCalendars(prev => ({ ...prev, [field.name]: !prev[field.name] }))}
-                  className="p-2 w-full border rounded text-left"
-                >
-                  {dates[field.name]
-                    ? dates[field.name]?.toLocaleDateString("ru-RU")
-                    : "Выбрать дату"}
-                </button>
-
-                {openCalendars[field.name] && (
-                  <div className="mt-2 border rounded-lg p-2 z-10 bg-white relative">
-                    <Calendar
-                      mode="single"
-                      selected={dates[field.name]}
-                      onSelect={(value) => handleDateSelect(field.name, value)}
-                      className="rounded-lg border"
+        
+                <Controller
+                  control={control}
+                  name={field.name}
+                  render={({ field: { onChange, value } }) => (
+                    <DatePicker
+                      selected={value ? new Date(value) : null}
+                      onChange={onChange}
+                      locale={ru}
+                      dateFormat="dd.MM.yyyy"
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                      className="border border-gray-300 rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-purple-400"
+                      isClearable
                     />
-                  </div>
-                )}
+                  )}
+                />
               </>
             ) : (
               <>
-                
+   
                 <InputForm
+                  placeholder={field.placeholder}
                   nameInp={field.name}
                   label={field.label}
                   type={field.type}
@@ -110,27 +115,25 @@ export function UniversalDocForm({ template, formFields }: IUniversalFormProps) 
                     required: field.required === true
                       ? "Это поле обязательно"
                       : typeof field.required === "string"
-                      ? field.required
-                      : false,
+                        ? field.required
+                        : false,
                     minLength: field.minLength
                       ? { value: field.minLength, message: `Минимум ${field.minLength} символов` }
                       : undefined,
                     maxLength: field.maxLength
                       ? { value: field.maxLength, message: `Максимум ${field.maxLength} символов` }
                       : undefined,
-                     pattern: field.pattern
+                    pattern: field.pattern
                       ? {
                           value:
                             typeof field.pattern === "string"
-                              ? new RegExp(field.pattern) 
+                              ? new RegExp(field.pattern)
                               : field.pattern,
                           message: field.customMessage || "Некорректный формат",
                         }
                       : undefined,
                   })}
                 />
-
-
                 {errors[field.name] && (
                   <p className="text-red-500 text-sm mt-1">
                     {String(errors[field.name]?.message)}

@@ -18,6 +18,18 @@
   }
 }
 
+.rdp-dropdown {
+  height: 50px !important; /* или нужная вам высота */
+  max-height: 80px !important;
+  overflow-y: auto !important;
+}
+
+/* Если нужно изменить только выпадающий список лет */
+.rdp-dropdown_year {
+  height: 300px !important;
+  max-height: 400px !important;
+}
+
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -127,3 +139,106 @@
 }
 
 
+        .react-datepicker__header {
+          background: transparent !important;
+          border-bottom: none !important;
+          padding-top: 18px !important;   /* увеличенный отступ сверху */
+          padding-bottom: 3px !important; /* отступ между заголовком и календарём */
+        }
+
+        /* Текст месяца + года */
+        .react-datepicker__current-month {
+          color: #0f172a; /* neutral-900 */
+          font-weight: 600;
+          font-size: 25px!important;
+          margin-bottom: 20px;
+        }
+
+                /* Недели (пн, вт, ...) */
+          .react-datepicker__day-name {
+          width: 40px !important;
+          height: 40px !important;
+          line-height: 40px !important;
+          margin: 2px !important;
+          display: flex row !important;
+          align-items: center !important;
+          justify-content: center !important;
+          font-weight: 500 !important;
+          color: #6b7280 !important; /* красиво */
+        }
+
+        /* Увеличим отступ от шапки до первой строки дней */
+        .react-datepicker__month {
+          padding-top: 8px !important;
+        }
+
+        /* Стили ячеек дней — минималистично */
+        .react-datepicker__day {
+          width: 40px!important;
+          height: 40px!important;
+          line-height: 40px!important;
+          margin: 2px;
+          border-radius: 8px;
+          font-weight: 500;
+        }
+        .react-datepicker__day:hover {
+          background: rgba(15, 23, 42, 0.04);
+        }
+        .react-datepicker__day--selected {
+          background: #4f46e5 !important; /* purple-600 */
+          color: #fff !important;
+          box-shadow: none !important;
+        }
+        .react-datepicker__day--today {
+          box-shadow: inset 0 0 0 1px rgba(15,23,42,0.06);
+        }
+
+        /* Скрыть треугольник popper (чтобы было чище) */
+        .react-datepicker__triangle {
+          display: none !important;
+        }
+
+        /* Кастомные выпадающие списки для месяца/года */
+        .react-datepicker__month-dropdown,
+        .react-datepicker__year-dropdown {
+          display: flex;
+          justify-content: center;
+          gap: 8px;
+          padding: 8px 12px;
+        }
+
+        /* Стили собственно селектов внутри react-datepicker */
+        .react-datepicker__month-select,
+        .react-datepicker__year-select {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          border: 1px solid #e6e9ee; /* тонкая граница */
+          background: #fff;
+          padding: 6px 10px;
+          margin-top: 10px;
+          border-radius: 8px;
+          font-size: 0.9rem;
+          box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+          cursor: pointer;
+        }
+
+        .react-datepicker__month-select:focus,
+        .react-datepicker__year-select:focus {
+          outline: none;
+          box-shadow: 0 0 0 6px rgba(79,70,229,0.08); /* мягкий фокус фиолетовым */
+          border-color: rgba(79,70,229,0.6);
+        }
+
+        /* Убрать стрелки у стандартного селекта в некоторых браузерах (чистый вид) */
+        .react-datepicker__month-select::-ms-expand,
+        .react-datepicker__year-select::-ms-expand {
+          display: none;
+        }
+
+        /* Немного сузим общую ширину popup, чтобы dropdownы выглядели аккуратно */
+        .react-datepicker-popper .react-datepicker {
+          box-shadow: 0 6px 18px rgba(2,6,23,0.08);
+          border-radius: 12px;
+          overflow: hidden;
+        }
