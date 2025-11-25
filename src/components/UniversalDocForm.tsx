@@ -55,8 +55,7 @@ for (const field of formFields) {
       const rawPrice = data[field.name] // уже здесь
       // при необходимости преобразовать в пропись:
       const priceWords = convertNumberToWordsRu(String(rawPrice ?? "0"))
-      // docData[`${field.name}_WORDS`] = priceWords
-      console.log(priceWords)
+      docData[`${field.name}_Проп`] = priceWords
     }
     }
 

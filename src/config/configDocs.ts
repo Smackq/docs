@@ -32,7 +32,8 @@ export const DOCS: IDocs[] = [
       "label": "Дата составления договора", 
       "name": "Договор", 
       "type": "date", 
-      "class_date": "short" 
+      "class_date": "short",
+      "required": true,
     },
     { 
       "label": "ФИО Продавца", 
@@ -49,13 +50,19 @@ export const DOCS: IDocs[] = [
       "label": "Адрес продавца (фактический)", 
       "name": "adres_pr_fact", 
       "type": "string", 
-      "placeholderDoc": "Адрес_Пр_Факт" 
+      "placeholderDoc": "Адрес_Пр_Факт",
+      "minLength": 8,  
+      "maxLength": 100, 
+      "required": true, 
     },
     { 
       "label": "Адрес продавца (регистрация)", 
       "name": "adres_pr_zar", 
       "type": "string", 
-      "placeholderDoc": "Адрес_Пр_Зар" 
+      "placeholderDoc": "Адрес_Пр_Зар", 
+      "minLength": 8,  
+      "maxLength": 100, 
+      "required": true, 
     },
     { 
       "label": "Серия паспорта продавца", 
@@ -64,6 +71,7 @@ export const DOCS: IDocs[] = [
       "placeholder": "1234",
       "placeholderDoc": "Сер_Пр", 
       pattern: "^[0-9]{4}$",
+      "required": true, 
       
     },
     { 
@@ -72,19 +80,24 @@ export const DOCS: IDocs[] = [
       "type": "string", 
       "placeholderDoc": "Ном_Пр", 
       pattern: "^[0-9]{6}$",
-      
+      "required": true, 
+      "placeholder": "123456",
     },
     { 
       "label": "Дата выдачи паспорта продавца", 
       "name": "Пр", 
       "type": "date", 
-      "class_date": "long"
+      "class_date": "long",
+      "required": true, 
     },
     { 
       "label": "Кем выдан паспорт продавца", 
       "name": "mesto_pr", 
       "type": "string", 
-      "placeholderDoc": "Место_Пр" 
+      "placeholderDoc": "Место_Пр" ,
+      "minLength": 3,  
+      "maxLength": 80, 
+      "required": true,
     },
 
     { 
@@ -92,6 +105,8 @@ export const DOCS: IDocs[] = [
       "name": "fio_pok", 
       "type": "string", 
       "placeholderDoc": "Фио_Пок",
+      "minLength": 8,  
+      "maxLength": 80, 
       "required": true,
       
     },
@@ -99,38 +114,54 @@ export const DOCS: IDocs[] = [
       "label": "Адрес покупателя (фактический)", 
       "name": "adres_pok_fact", 
       "type": "string", 
-      "placeholderDoc": "Адрес_Пок_Факт" 
+      "placeholderDoc": "Адрес_Пок_Факт",
+      "minLength": 8,  
+      "maxLength": 100, 
+      "required": true,
     },
     { 
       "label": "Адрес покупателя (регистрация)", 
       "name": "adres_pok_zar", 
       "type": "string", 
-      "placeholderDoc": "Адрес_Пок_Зар" 
+      "placeholderDoc": "Адрес_Пок_Зар" ,
+      "minLength": 8,  
+      "maxLength": 100, 
+      "required": true,
     },
     { 
       "label": "Серия паспорта покупателя", 
       "name": "ser_pok", 
       "type": "string", 
-      "placeholderDoc": "Сер_Пок" 
+      "placeholderDoc": "Сер_Пок" ,
+      "placeholder": "1234",
+      pattern: "^[0-9]{4}$",
+      "required": true,
     },
     { 
       "label": "Номер паспорта покупателя", 
       "name": "nom_pok", 
       "type": "string", 
-      "placeholderDoc": "Ном_Пок" 
+      "placeholderDoc": "Ном_Пок" ,
+      pattern: "^[0-9]{6}$",
+      "required": true, 
+      "placeholder": "123456",
     },
     { 
       "label": "Дата выдачи паспорта покупателя", 
       "name": "Пок", 
       "type": "date", 
       "placeholderDoc": "Пок", 
-      "class_date": "long" 
+      "class_date": "long" ,
+      "required": true, 
     },
     { 
       "label": "Кем выдан паспорт покупателя", 
       "name": "mesto_pok", 
       "type": "string", 
-      "placeholderDoc": "Место_Пок" 
+      "placeholderDoc": "Место_Пок",
+      "minLength": 3,  
+      "maxLength": 80, 
+      "required": true,
     },
 
     { 
@@ -139,7 +170,8 @@ export const DOCS: IDocs[] = [
       "type": "string", 
       "placeholderDoc": "Марка_Модель",
       "required": true,
-     
+      "minLength": 3,  
+      "maxLength": 80, 
     },
     { 
       "label": "Город составления договора", 
@@ -156,75 +188,101 @@ export const DOCS: IDocs[] = [
       "type": "string", 
       "placeholderDoc": "Вин_Ном",
       "required": true,
-      
+      "minLength": 17,
+      "maxLength": 17,
+      pattern: "^[A-HJ-NPR-Z0-9]{17}$",
     },
     { 
       "label": "Год выпуска ТС", 
       "name": "god_vypuska", 
-      "type": "number", 
+      "type": "string", 
       "placeholderDoc": "Год_Выпуска",
+      "pattern": "^[0-9]{4}$",
+      "required": true,
       "min": 1900,
-      "max": new Date().getFullYear(),
-      
+      "max": 2025,
     },
     { 
       "label": "Номер двигателя", 
       "name": "nom_dvig", 
       "type": "string", 
-      "placeholderDoc": "Ном_Двиг" 
+      "placeholderDoc": "Ном_Двиг",
+      "minLength": 3,
+      "maxLength": 30,
+      "required": true,
     },
     { 
       "label": "Номер шасси (рамы)", 
       "name": "nom_shassi", 
       "type": "string", 
-      "placeholderDoc": "Ном_Шасси" 
+      "placeholderDoc": "Ном_Шасси",
+      "minLength": 3,
+      "maxLength": 30,
     },
     { 
       "label": "Номер кузова", 
       "name": "nom_kuz", 
       "type": "string", 
-      "placeholderDoc": "Ном_Куз" 
+      "placeholderDoc": "Ном_Куз",
+      "minLength": 3,
+      "maxLength": 30,
     },
     { 
       "label": "Цвет ТС", 
       "name": "cvet", 
       "type": "string", 
-      "placeholderDoc": "Цвет" 
+      "placeholderDoc": "Цвет",
+      "minLength": 2,
+      "maxLength": 20,
     },
     { 
       "label": "Серия ПТС", 
       "name": "seriya_ts", 
       "type": "string", 
-      "placeholderDoc": "Серия_Тс" 
+      "placeholderDoc": "Серия_Тс",
+      "pattern": "^[0-9]{2}[A-Za-zА-Яа-я]{2}$",
+      "minLength": 4,
+      "maxLength": 4,
+      "placeholder": "77ТМ",
+      "required": true,
     },
     { 
       "label": "Номер ПТС", 
       "name": "nom_ts", 
       "type": "string", 
-      "placeholderDoc": "Ном_Тс" 
+      "placeholderDoc": "Ном_Тс",
+      "pattern": "^[0-9]{6}$",
+      "minLength": 6,
+      "maxLength": 6,
+      "placeholder": "123456",
+      "required": true,
     },
     { 
       "label": "Кем выдан ПТС", 
       "name": "mesto_ts", 
       "type": "string", 
-      "placeholderDoc": "Место_Тс" 
+      "placeholderDoc": "Место_Тс",
+      "minLength": 3,
+      "maxLength": 80,
+      "required": true,
     },
     { 
       "label": "Дата выдачи ПТС", 
       "name": "Тс", 
       "type": "date", 
       "placeholderDoc": "Тс", 
-      "class_date": "long" 
+      "class_date": "long",
+      "required": true,
     },
     { 
       "label": "Цена ТС (цифрами)", 
-      "name": "cena_ts_cifr", 
+      "name": "Цена_Тс_Цифр", 
       "class_input": "price",
       "type": "string", 
       "placeholderDoc": "Цена_Тс_Цифр",
       "min": 1,
       "required": true,
-      
+      "pattern": "^[0-9]+$",
     },
     ],
   },
